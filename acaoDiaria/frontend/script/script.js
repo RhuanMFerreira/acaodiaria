@@ -38,6 +38,11 @@ const donationMethods = [
         title: "Doação de Alimentos",
         description: "Doe alimentos não perecíveis",
         details: "Entre em contato para combinar a entrega"
+    },
+    {
+        title: "Doação de Roupas",
+        description: "Doe roupas em bom estado para pessoas necessitadas",
+        details: "Ponto de coleta: Entre em contato via WhatsApp (61) 98578-0653"
     }
 ];
 
@@ -52,12 +57,43 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupDarkMode();
         setupScrollAnimation();
         updateYear();
+        initializeAnimations(); // Nova função adicionada
         console.log('Carregamento concluído!');
     } catch (error) {
         console.error('Erro na inicialização:', error);
         handleInitializationError();
     }
 });
+
+// Função de animações iniciais
+function initializeAnimations() {
+    anime({
+        targets: '.hero-content',
+        opacity: [0, 1],
+        translateY: [50, 0],
+        duration: 1000,
+        easing: 'easeOutQuad'
+    });
+
+    anime({
+        targets: '.service-card',
+        opacity: [0, 1],
+        translateY: [50, 0],
+        delay: anime.stagger(100),
+        duration: 800,
+        easing: 'easeOutQuad'
+    });
+
+    // Animação para os stats
+    anime({
+        targets: '.stat-item',
+        scale: [0.5, 1],
+        opacity: [0, 1],
+        delay: anime.stagger(200),
+        duration: 1500,
+        easing: 'spring(1, 80, 10, 0)'
+    });
+}
 
 // Funções principais
 async function loadServices() {
@@ -91,7 +127,6 @@ async function loadStats() {
         renderStats(fallbackStats);
     }
 }
-
 // Funções de renderização
 function renderServices(services) {
     const container = document.getElementById('services-container');
@@ -118,9 +153,6 @@ function renderStats(stats) {
     `).join('');
 }
 
-// Continuação do script.js
-
-// Configurar formulário de voluntários
 function setupVolunteerForm() {
     const form = document.getElementById('volunteer-form');
     if (!form) return;
@@ -143,40 +175,105 @@ function setupVolunteerForm() {
     });
 }
 
-// Carregar métodos de doação
 async function loadDonationMethods() {
     const container = document.getElementById('donation-container');
     if (!container) return;
 
     try {
-        const methods = await api.getDonationMethods();
-        renderDonationMethods(methods);
-    } catch (error) {
-        console.warn('Usando dados estáticos para doações:', error);
         renderDonationMethods(donationMethods);
+    } catch (error) {
+        console.warn('Erro ao carregar doações:', error);
     }
 }
 
-// Renderizar métodos de doação
 function renderDonationMethods(methods) {
     const container = document.getElementById('donation-container');
     const html = methods.map(method => `
-        <div class="donation-card service-card" data-aos="fade-up">
+        <div class="donation-card glass-card" data-aos="fade-up">
             <h3><i class="fas fa-hand-holding-heart"></i> ${method.title}</h3>
             <p>${method.description}</p>
             <div class="donation-details">
                 <p class="details">${method.details}</p>
-                <button class="cta-button donate-btn" onclick="copyToClipboard('${method.details}')">
-                    <i class="fas fa-copy"></i> Copiar Dados
-                </button>
             </div>
         </div>
     `).join('');
 
     container.innerHTML = html;
+
+    anime({
+        targets: '.donation-card',
+        opacity: [0, 1],
+        translateY: [20, 0],
+        delay: anime.stagger(100),
+        duration: 800,
+        easing: 'easeOutExpo'
+    });
 }
 
-// Configurar Dark Mode
+// Adicione esta função no seu script.js
+document.getElementById('volunteer-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        message: document.getElementById('message').value
+    };
+
+    // Simulação de envio bem-sucedido
+    const form = this;
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.innerHTML;
+    
+    // Muda o texto do botão para loading
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+    submitButton.disabled = true;
+
+    // Simula um delay de processamento
+    setTimeout(() => {
+        // Mostra mensagem de sucesso
+        const successMessage = document.createElement('div');
+        successMessage.className = 'success-message glass-card';
+        successMessage.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <h3>Formulário enviado com sucesso!</h3>
+            <p>Obrigado por se voluntariar, ${formData.name}! Entraremos em contato em breve.</p>
+        `;
+
+        // Insere a mensagem após o formulário
+        form.insertAdjacentElement('afterend', successMessage);
+
+        // Anima a mensagem
+        anime({
+            targets: successMessage,
+            opacity: [0, 1],
+            translateY: [20, 0],
+            duration: 800,
+            easing: 'easeOutExpo'
+        });
+
+        // Limpa o formulário
+        form.reset();
+
+        // Restaura o botão
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+
+        // Remove a mensagem após 5 segundos
+        setTimeout(() => {
+            anime({
+                targets: successMessage,
+                opacity: 0,
+                translateY: 20,
+                duration: 800,
+                easing: 'easeOutExpo',
+                complete: () => successMessage.remove()
+            });
+        }, 5000);
+    }, 1500);
+});
+
 function setupDarkMode() {
     const darkModeToggle = document.createElement('button');
     darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
@@ -197,7 +294,6 @@ function setupDarkMode() {
     });
 }
 
-// Configurar animações de scroll
 function setupScrollAnimation() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -212,7 +308,6 @@ function setupScrollAnimation() {
     });
 }
 
-// Atualizar ano no footer
 function updateYear() {
     const yearElement = document.getElementById('current-year');
     if (yearElement) {
@@ -220,14 +315,12 @@ function updateYear() {
     }
 }
 
-// Função para copiar para área de transferência
 window.copyToClipboard = function(text) {
     navigator.clipboard.writeText(text)
         .then(() => showNotification('Dados copiados para a área de transferência!', 'success'))
         .catch(() => showNotification('Erro ao copiar dados.', 'error'));
 };
 
-// Função para mostrar notificações
 function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
@@ -254,7 +347,6 @@ function showNotification(message, type = 'info') {
     }, 3000);
 }
 
-// Função de tratamento de erro de inicialização
 function handleInitializationError() {
     const containers = ['services-container', 'stats-container', 'donation-container'];
     containers.forEach(id => {
@@ -270,7 +362,6 @@ function handleInitializationError() {
     });
 }
 
-// Estilos dinâmicos
 document.head.insertAdjacentHTML('beforeend', `
     <style>
         :root {
@@ -314,3 +405,7 @@ document.head.insertAdjacentHTML('beforeend', `
         }
     </style>
 `);
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadDonationMethods();
+});
