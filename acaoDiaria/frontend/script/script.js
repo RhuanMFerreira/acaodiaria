@@ -1,5 +1,5 @@
 // script.js
-import { api } from '../api.js';
+import { api } from './api.js';
 
 // Dados de fallback
 const fallbackServices = [
