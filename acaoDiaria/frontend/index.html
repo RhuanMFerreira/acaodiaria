@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ação Diária | Assistência a Moradores de Rua</title>
-    <link rel="stylesheet" href="../frontend/style/style.css">
-    <link rel="stylesheet" href="../frontend/style/responsive.css" media="screen and (max-width: 768px)">
-    <script src="../frontend/script/script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/responsive.css">
 </head>
 <body>
     <header>
@@ -56,9 +56,9 @@
     <section id="voluntarios" class="section">
         <h2>Seja um Voluntário</h2>
         <form id="volunteer-form">
-            <input type="text" placeholder="Seu nome" required>
-            <input type="email" placeholder="Seu e-mail" required>
-            <textarea placeholder="Como você gostaria de ajudar?"></textarea>
+            <input type="text" name="name" placeholder="Seu nome" required>
+            <input type="email" name="email" placeholder="Seu e-mail" required>
+            <textarea name="message" placeholder="Como você gostaria de ajudar?"></textarea>
             <button type="submit" class="cta-button">Enviar</button>
         </form>
     </section>
@@ -89,8 +89,7 @@
         </div>
         <p>&copy; <span id="current-year"></span> Ação Diária - Todos os direitos reservados</p>
     </footer>
-
-    <!-- Font Awesome para ícones -->
-    <script src="" crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script type="module" src="./script/script.js"></script>
 </body>
 </html>
