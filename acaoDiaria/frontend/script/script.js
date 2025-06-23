@@ -27,12 +27,7 @@ const donationMethods = [
     {
         title: "PIX",
         description: "Faça uma doação via PIX",
-        details: "Chave PIX: 61985780653"
-    },
-    {
-        title: "Transferência Bancária",
-        description: "Faça uma transferência bancária",
-        details: "Banco: XXX, Agência: XXX, Conta: XXX"
+        details: "Chave PIX: CNPJ 50.998.279/0001-12"
     },
     {
         title: "Doação de Alimentos",
