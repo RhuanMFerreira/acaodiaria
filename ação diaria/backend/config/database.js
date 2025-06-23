@@ -6,7 +6,7 @@ const mysql = require('mysql2');
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',      // Seu usuário do MariaDB
-    password: '',      // Sua senha do MariaDB
+    password: '1234',      // Sua senha do MariaDB
     database: 'acao_diaria',
     port: 3306       // Porta padrão do MariaDB
 });
