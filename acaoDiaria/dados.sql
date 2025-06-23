@@ -26,15 +26,14 @@ CREATE TABLE IF NOT EXISTS donations (
     FOREIGN KEY (donor_id) REFERENCES users(id)
 );
 
--- Criar tabela de voluntários
+-- Criar tabela de Voluntarios
+DROP TABLE IF EXISTS volunteers;
 CREATE TABLE IF NOT EXISTS volunteers (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    availability TEXT,
-    skills TEXT,
-    status VARCHAR(20) DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    message TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Criar tabela de serviços
